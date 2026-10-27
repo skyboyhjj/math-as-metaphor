@@ -43,9 +43,32 @@
 python3 scripts/verify_yoneda.py      # Yoneda 引理的枚举验证（五组）
 python3 scripts/verify_category.py    # 范畴论四组：等价≠同构、Cat 非小范畴等
 python3 scripts/verify_arrow_g4.py    # 阿罗定理：穷举聚合规则，看独裁是否唯一幸存
+python3 scripts/check_github_math.py  # 发布前检查：公式里有没有 GitHub 不认的宏
 ```
 
 每个脚本都会打印分组标题、验算过程与结论，不需要额外参数。
+
+### 关于 `check_github_math.py`
+
+GitHub 渲染 Markdown 里的 LaTeX 时，只用 MathJax 核心宏的一个子集。用了白名单外的宏，页面会显示红色报错：
+
+```
+The following macros are not allowed: operatorname
+```
+
+这个报错只对读者可见，本地编辑器里看不出来。所以每期写完、提交之前跑一遍：
+
+```bash
+python3 scripts/check_github_math.py              # 扫全仓，报出文件名 + 行号 + 建议改法
+python3 scripts/check_github_math.py --all-macros # 附带列出用到的每个宏及次数
+python3 scripts/check_github_math.py --self-test  # 验证脚本自身有效（内置夹具）
+```
+
+退出码 0 表示干净，1 表示有隐患。
+
+它拦的是这一类：`\operatorname` `\bm` `\color` `\bbox` `\def` `\newcommand` `\tag` `\label` `\require` `\ce` 等——宏定义、样式注入、公式编号、扩展包加载，GitHub 一律拒绝。围栏代码块会被整段跳过，不会把 Python 的 `\n` 当成宏。
+
+本仓库当前状态：10 个 Markdown、251 个公式片段，全部通过。
 
 ---
 
@@ -81,7 +104,7 @@ archive/      未采用的备选稿
 
 推导、证明、可复算的代码，都放在这个仓库里，通过文末的「阅读原文」跳转过来。
 
-这样做的理由很简单：**公众号适合读，GitHub 适合查。**同一个结论，读者信不信，取决于能不能自己算一遍——那部分不该被排版吃掉。
+这样做的理由很简单：**公众号适合读，GitHub 适合查**。同一个结论，读者信不信，取决于能不能自己算一遍——那部分不该被排版吃掉。
 
 ---
 
