@@ -146,7 +146,7 @@ $`G := h^A \sqcup h^B`$
 
 这就是密度定理说的事：
 
-$`F \;\cong\; \operatorname{colim}\big(h^A \to F\big)`$
+$`F \;\cong\; \mathrm{colim}\big(h^A \to F\big)`$
 
 **每一个函子，都是可表函子的余极限**。
 
