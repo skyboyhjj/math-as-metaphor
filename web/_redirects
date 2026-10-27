@@ -1,0 +1,2 @@
+# 根域跳到 www，只保留一个主域
+https://huiskill.org/*  https://www.huiskill.org/:splat  301
