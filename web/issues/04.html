@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 4 期 · 当数学开始谈论自己：范畴论作为一种语言 · 数学如隐喻</title>
+<meta name="description" content="当数学开始谈论自己：范畴论作为一种语言">
+<meta property="og:title" content="第 4 期 · 当数学开始谈论自己：范畴论作为一种语言">
+<meta property="og:site_name" content="数学如隐喻">
+<meta property="og:description" content="当数学开始谈论自己：范畴论作为一种语言">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+
+</head>
+<body>
+<div class="paper">
+<nav class="top-nav"><a href="/">目录</a><a href="/issues/01.html">第 1 期</a><a href="/issues/02.html">第 2 期</a><a href="/issues/03.html">第 3 期</a><a href="/issues/04.html" class="on">第 4 期</a></nav>
+<main>
+<article class="issue">
+<h1>当数学开始谈论自己：范畴论作为一种语言</h1>
+<p class="issue-meta">合集【数学如隐喻】第 4 期 ｜ <strong>v1.0</strong>（2026-10-26） ｜ 约 4300 字</p>
+<h2>一、一个为了说清「自然」而造的词</h2>
+<p>1945 年，Eilenberg 和 Mac Lane 发表了一篇 64 页的论文。他们本来想做的事很具体：给代数拓扑里那个天天在用、却说不清楚的词——<strong>自然</strong>——一个严格定义。</p>
+<p>数学家说「这个同构是自然的」，意思是它不需要任何额外选择，是"自动"的。可"自动"是什么？没定义。</p>
+<p>他们为了回答这个问题，造了两样东西：<strong>范畴</strong>和<strong>函子</strong>。然后才把"自然变换"定义出来。</p>
+<p><strong>结果，那篇论文成了范畴论的起点</strong>。</p>
+<p>这件事本身值得记一句：<strong>范畴论不是为了一统天下而生的，它是为了给一个形容词下定义而生的</strong>。一个形容词，最后长成了一门语言。</p>
+<hr class="section-rule">
+<h2>二、它不描述对象，只描述箭头</h2>
+<p>先看范畴的定义。一共四样东西：</p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">组成</th><th style="text-align:left">是什么</th></tr></thead><tbody><tr><td style="text-align:left">对象</td><td style="text-align:left">一堆东西，不需要有内部结构</td></tr><tr><td style="text-align:left">态射（箭头）</td><td style="text-align:left">对象之间的映射，每个有确定的源和靶</td></tr><tr><td style="text-align:left">复合</td><td style="text-align:left">两个接得上的箭头，能接成一个</td></tr><tr><td style="text-align:left">恒等</td><td style="text-align:left">每个对象上有一个"什么都不做"的箭头</td></tr></tbody></table></div>
+<p>外加两条规矩：<strong>复合要结合</strong>，<strong>恒等要中性</strong>。</p>
+<p><strong>就这些</strong>。没有"元素"，没有"属于"，没有"内部"。</p>
+<p>一个最省事的例子：<strong>偏序集就是范畴</strong>。对象是元素，从 <span class="math">$x$</span> 到 <span class="math">$y$</span> 有一个箭头当且仅当 <span class="math">$x \le y$</span>。</p>
+<p>取 <span class="math">$a < b < c$</span> 三个对象，全部态射是六个：<span class="math">$(a,a),(a,b),(a,c),(b,b),(b,c),(c,c)$</span>。</p>
+<p>我们验过：恒等齐备、复合封闭、结合律成立。</p>
+<p><strong>注意这里发生了什么</strong>：<span class="math">$a$</span> 是什么？不知道。<span class="math">$a$</span> 内部有什么？没有。<span class="math">$a$</span> 只知道三件事——它到 <span class="math">$a$</span> 有箭头，到 <span class="math">$b$</span> 有箭头，到 <span class="math">$c$</span> 有箭头。</p>
+<p><strong>对象被清空了，只剩下它指向谁、谁指向它</strong>。</p>
+<p>上一篇讲 Yoneda 时说的是"对象由关系决定"。这里更狠：<strong>在这个语言里，对象压根就没有"内部"这个位置</strong>。</p>
+<hr class="section-rule">
+<h2>三、后果：数学第一次能谈论自己</h2>
+<p>有了范畴，就能定义范畴之间的映射——<strong>函子</strong>。函子把对象送到对象，把箭头送到箭头，并且保持复合和恒等。</p>
+<p>有了函子，就能定义函子之间的映射——<strong>自然变换</strong>。它是"一族箭头"，满足每个方块都交换。</p>
+<p>于是出现了一个以前没有的层级：</p>
+<pre><code class="language-text">对象  →  范畴  →  函子  →  自然变换
+        （对象的家）  （范畴之间的映射）  （函子之间的映射）</code></pre>
+<p><strong>这是数学史上第一次，数学有了一门语言，可以谈论"所有数学结构"而不必逐个谈</strong>。</p>
+<p>不是"这个群"和"那个群"，是"所有群构成的范畴"；不是"拓扑空间之间的连续映射"，是"拓扑空间范畴到群范畴的函子"。</p>
+<p>而且这层抬升可以一直往上：范畴构成范畴（记作 <span class="math">$\mathbf{Cat}$</span>），函子构成范畴，自然变换是那些范畴里的箭头。</p>
+<h3>函子长什么样：一个能算的例子</h3>
+<p>光说「映射」太虚。看一个真在用的。</p>
+<p>取拓扑空间范畴（对象是空间，箭头是连续映射）与群范畴（对象是群，箭头是同态）。<strong>基本群</strong> <span class="math">$\pi_1$</span> 是一个函子：</p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">函子要做什么</th><th style="text-align:left">基本群怎么做</th></tr></thead><tbody><tr><td style="text-align:left">对象送到对象</td><td style="text-align:left">空间 <span class="math">$X$</span> 送到群 <span class="math">$\pi_1(X)$</span></td></tr><tr><td style="text-align:left">箭头送到箭头</td><td style="text-align:left">连续映射 <span class="math">$f \colon X \to Y$</span> 送到同态 <span class="math">$f_* \colon \pi_1(X) \to \pi_1(Y)$</span></td></tr><tr><td style="text-align:left">保持恒等</td><td style="text-align:left"><span class="math">$(\mathrm{id}_X)_* = \mathrm{id}_{\pi_1(X)}$</span></td></tr><tr><td style="text-align:left">保持复合</td><td style="text-align:left"><span class="math">$(g \circ f)_* = g_* \circ f_*$</span></td></tr></tbody></table></div>
+<p>四条都对，所以它真是个函子。</p>
+<p><strong>它有什么用？</strong> 把「两个空间是否同胚」这个几何问题，翻译成「两个群是否同构」这个代数问题。翻译之后可以算。</p>
+<p><strong>但翻译会丢东西。</strong> 不同的空间可以有同构的基本群——这时候你无法从群反推空间。</p>
+<p><strong>这个「丢」不是缺陷，是函子的本性</strong>：它保证「同构的空间有同构的群」，但<strong>不保证反过来</strong>。所以得到的是必要条件，不是充分条件。</p>
+<p><strong>这一点第五节还要用到</strong>：范畴论的自由，恰恰来自它允许你选择「丢多少」。</p>
+<h3>「自然」到底是什么：双重对偶</h3>
+<p>回到开头那个问题。Eilenberg 和 Mac Lane 要定义的「自然」，用这个例子一看就懂。</p>
+<p>设 <span class="math">$V$</span> 是向量空间，<span class="math">$V^*$</span> 是它的对偶空间。有两个做法都能把 <span class="math">$V$</span> 映到某个「对偶」上：</p>
+<p><strong>做法一</strong>：<span class="math">$V \to V^*$</span>。要给出一个具体映射，你必须<strong>选一组基</strong>——选了基才有坐标去配对。换一组基，映射就变了。这叫不自然。</p>
+<p><strong>做法二</strong>：<span class="math">$V \to V^{**}$</span>，定义为 <span class="math">$v \mapsto (f \mapsto f(v))$</span>。这里<strong>没有任何选择</strong>：给你一个 <span class="math">$v$</span>、给你一个 <span class="math">$f$</span>，就把 <span class="math">$f$</span> 作用在 <span class="math">$v$</span> 上。换成什么基都一样。</p>
+<p><strong>做法二就是「自然」的。</strong></p>
+<p>所以 Eilenberg–Mac Lane 的「自然」，精确地说是：<strong>不依赖任何选择、能对所有对象同时给出的映射族</strong>。这就是自然变换。</p>
+<blockquote><p>顺便一个冷知识：<span class="math">$V \to V^{**}$</span> 在有限维时是同构，无限维时<strong>只是单射</strong>。是否同构，恰好接上上一篇那个「自反」的问题。</p></blockquote>
+<p><strong>数学开始谈论自己了</strong>。</p>
+<hr class="section-rule">
+<h2>四、代价：谈论自己会撞墙</h2>
+<p>但这件事不是免费的。</p>
+<p><span class="math">$\mathbf{Cat}$</span> ——所有小范畴构成的范畴——<strong>它自己不是小范畴</strong>。</p>
+<p>道理不难看：如果 <span class="math">$\mathbf{Cat}$</span> 是小范畴，它的对象就是一个集合，装着所有小范畴。那么可以按分离原则挑出"那些不包含自身的小范畴"，用它们造一个新范畴——然后问它是否包含自身。</p>
+<p><strong>这就是 1901 年那个悖论，换了一身衣服</strong>。</p>
+<p>所以范畴论必须一生下来就分大小：<strong>小范畴</strong>（对象和箭头都是集合）、<strong>大范畴</strong>（不是）。<span class="math">$\mathbf{Cat}$</span> 是大范畴。</p>
+<p><strong>一门能谈论所有数学结构的语言，不能无代价地谈论"自己的全体"</strong>。</p>
+<p>这不是技术瑕疵，是结构性的。凡是足够强到能谈论自己的语言，都要在这里划一条线。数学在这里，和逻辑、和自然语言一样，撞上了同一堵墙。</p>
+<hr class="section-rule">
+<h2>五、最深的自由：你可以选择什么叫「一样」</h2>
+<p>到这里该说本期真正想说的事。</p>
+<p>在集合论里，<strong>相等是给定的</strong>。两个集合要么相等，要么不等，由外延公理判定：元素一样就相等。</p>
+<p>在范畴论里，<strong>"一样"是可以选的</strong>。至少有三档：</p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">档次</th><th style="text-align:left">名字</th><th style="text-align:left">要求</th></tr></thead><tbody><tr><td style="text-align:left">最严</td><td style="text-align:left">严格相等</td><td style="text-align:left">对象完全相同</td></tr><tr><td style="text-align:left">中等</td><td style="text-align:left">同构</td><td style="text-align:left">存在一对互逆的箭头</td></tr><tr><td style="text-align:left">最松</td><td style="text-align:left">等价</td><td style="text-align:left">存在一个满忠实且本质满的函子</td></tr></tbody></table></div>
+<p><strong>前两档在集合论里也有，第三档是全新的</strong>。</p>
+<p>而且第三档给出的答案常常出人意料。举个能算的例子：</p>
+<p><strong>范畴 C</strong>：只有一个对象 <span class="math">$\ast$</span>，只有一个箭头 <span class="math">$\mathrm{id}_\ast$</span>。</p>
+<p><strong>范畴 D</strong>：两个对象 <span class="math">$A, B$</span>，四个箭头——<span class="math">$\mathrm{id}_A$</span>、<span class="math">$\mathrm{id}_B$</span>，以及一对互逆的 <span class="math">$f \colon A \to B$</span>、<span class="math">$g \colon B \to A$</span>（满足 <span class="math">$g \circ f = \mathrm{id}_A$</span>，<span class="math">$f \circ g = \mathrm{id}_B$</span>）。</p>
+<p><strong>C 和 D 一样吗</strong>？</p>
+<ul><li><strong>同构？不</strong>。范畴同构要求对象之间有双射：1 个对 2 个，做不到。</li><li><strong>等价？是</strong>。取函子 <span class="math">$F$</span> 把 <span class="math">$\ast$</span> 送到 <span class="math">$A$</span>。它满忠实（两边 Hom 集都是 1 元集），而且本质满（<span class="math">$B$</span> 与 <span class="math">$A$</span> 同构）。</li></ul>
+<p><strong>所以：不等价吗？不，等价。一样吗？不一样</strong>。</p>
+<p>这不是文字游戏。它的意思是：<strong>范畴论允许你把"两个对象、彼此同构"和"一个对象"当成同一件事来看</strong>。</p>
+<h3>为什么这是「自由」</h3>
+<p>因为<strong>选择用哪一档，是你自己定的</strong>。</p>
+<p>如果你在写算法、要实现数据结构，你多半要"同构"甚至"严格相等"——你需要具体的东西。如果你在做分类、在找结构的不变量，你要的是"等价"——具体是哪个实例不重要。</p>
+<p><strong>这是自由，但不是随便的自由</strong>。一旦你选了"等价"，你就必须只使用那些在等价下不变的性质。你不能一边说"它们一样"，一边又拿"对象个数"作论据。</p>
+<p><strong>选哪一档是自由的，选完要守规矩是必须的</strong>。</p>
+<p>这和上一篇是同一件事的两面：Yoneda 说"对象由关系决定"，这里说"那关系之间的'一样'，也由你自己定义"。<strong>自由度不是没有了，是往上挪了一层</strong>。</p>
+<hr class="section-rule">
+<h2>六、回到自由</h2>
+<p>这一期讲的是语言层的自治。</p>
+<p>前几期的自由，是在<strong>已有的语言里</strong>选：选公理（第 2 期）、选用哪套关系描述对象（第 3 期）。</p>
+<p>这一期的自由更深一层：<strong>你可以选"什么叫一样"</strong>。这是给语言本身立法。</p>
+<p>但代价也更深：</p>
+<ul><li>你造了一门能谈论所有数学结构的语言（<span class="math">$\mathbf{Cat}$</span>）</li><li>它立刻撞上"不能无代价谈论自己"的墙</li><li>你必须选一档"一样"，然后一辈子只用这一档</li></ul>
+<p><strong>自由越大，要守的规矩越硬</strong>。这句话到这里是第三次出现了，而且一次比一次硬。</p>
+<hr class="section-rule">
+<h2>三个小自测</h2>
+<p><strong>1. 为什么偏序集能当范畴？它甚至连"映射"都没有</strong>。</p>
+<p>因为 <span class="math">$x \le y$</span> 就是一条箭头。只要有源、有靶、能复合（<span class="math">$x \le y$</span> 且 <span class="math">$y \le z$</span> 就给 <span class="math">$x \le z$</span>）、有恒等（<span class="math">$x \le x$</span>），范畴的四样东西就齐了。<strong>箭头不一定是函数</strong>。</p>
+<p><strong>2. 如果我用"等价"来看两个范畴，我还能问"这个范畴有几个对象"吗</strong>？</p>
+<p>不能当不变量用。等价允许对象个数改变（上面 1 个和 2 个的例子）。能问的是"它有几个同构类"——那才是等价不变的。</p>
+<p><strong>3. 为什么 <span class="math">$\mathbf{Cat}$</span> 不能是小范畴？这个限制能绕开吗</strong>？</p>
+<p>绕不开。凡是能表达"所有小范畴"的集合都会重新生成那个自指结构。可以绕的只有一种方式：<strong>换一个更弱的基础</strong>（比如不用集合论而用类型论），但那不是绕开，是把墙挪到别处。</p>
+<hr class="section-rule">
+<h2>最后一句</h2>
+<p>范畴论的野心，是让数学用一门语言谈论自己。</p>
+<p>它做到了，但做到的方式很有意思：<strong>它不是给数学拍一张全景照，而是给数学造了一套描述"怎么连"的语法</strong>。</p>
+<p>而语法有一个特点：<strong>它能说的，永远比它说出来的多</strong>。这就是为什么到了这一步，数学还需要别的东西——下一步要谈的，是那件东西在翻译中丢掉的部分。</p>
+<p>如果你只记住一句：<strong>范畴论的自由，在于它允许你重新定义什么叫「一样」。这是它给数学最大的一份礼物，也是最难守住的一份</strong>。</p>
+</article>
+<p class="appendix-link">完整证明与算据：<a href="/appendices/04.html">附录 · 第 4 期</a></p><div class="pager"><a class="pg prev" href="/issues/03.html"><span>上一期</span>第 3 期</a></div>
+</main>
+<footer class="site-footer">
+  <p><strong>数学如隐喻</strong> · Mathematics as Metaphor</p>
+  <p>源稿与算据：<a href="https://github.com/skyboyhjj/math-as-metaphor">github.com/skyboyhjj/math-as-metaphor</a></p>
+  <p class="license">正文与附录采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>，脚本采用 MIT。</p>
+</footer>
+</div>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

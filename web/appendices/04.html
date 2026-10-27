@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>附录 · 第 4 期 · 数学如隐喻</title>
+<meta name="description" content="附录：范畴论算据">
+<meta property="og:title" content="附录 · 第 4 期">
+<meta property="og:site_name" content="数学如隐喻">
+<meta property="og:description" content="附录：范畴论算据">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+
+</head>
+<body>
+<div class="paper">
+<nav class="top-nav"><a href="/">目录</a><a href="/issues/01.html">第 1 期</a><a href="/issues/02.html">第 2 期</a><a href="/issues/03.html">第 3 期</a><a href="/issues/04.html" class="on">第 4 期</a></nav>
+<main>
+<article class="issue appendix">
+<h1>附录：范畴论算据</h1>
+<p class="issue-meta"><strong>配套文档</strong>：<a href="/issues/04.html"><code>issues/04-category-as-language.md</code></a> ｜ <strong>日期</strong>：2026-10-26 ｜ <strong>运行环境</strong>：Python 3.12，纯标准库 ｜ <strong>源文件 md5</strong>：<code>a475e15f063a96ab679efdd7ef9249d0</code></p>
+<h2>一、四组在验什么</h2>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">组</th><th style="text-align:left">验什么</th><th style="text-align:left">对应正文</th></tr></thead><tbody><tr><td style="text-align:left">G1</td><td style="text-align:left">三元链偏序集满足范畴公理</td><td style="text-align:left">第二节</td></tr><tr><td style="text-align:left">G2</td><td style="text-align:left"><strong>C 与 D 等价但不同构</strong></td><td style="text-align:left">第五节（核心）</td></tr><tr><td style="text-align:left">G3</td><td style="text-align:left">Cat 不能是小范畴</td><td style="text-align:left">第四节</td></tr><tr><td style="text-align:left">G4</td><td style="text-align:left">自然变换可复合</td><td style="text-align:left">第三节末</td></tr></tbody></table></div>
+<h2>二、G2 为什么是全篇的关键</h2>
+<p>正文第五节的论点是：范畴论的自由在于<strong>可以选择「什么叫一样」</strong>。这个论点要站住，必须有一个"等价但不同构"的实例。</p>
+<p>构造如下。</p>
+<p><strong>范畴 C</strong>：一个对象 <span class="math">$\ast$</span>，一个箭头 <span class="math">$\mathrm{id}_\ast$</span>。</p>
+<p><strong>范畴 D</strong>：两个对象 <span class="math">$A, B$</span>；箭头 <span class="math">$\mathrm{id}_A, \mathrm{id}_B, f \colon A \to B, g \colon B \to A$</span>，满足</p>
+<p><span class="math">$g \circ f = \mathrm{id}_A, \qquad f \circ g = \mathrm{id}_B$</span></p>
+<p>即 <span class="math">$A$</span> 与 <span class="math">$B$</span> 同构。</p>
+<p><strong>不同构</strong>：范畴同构要求对象集之间有双射。<span class="math">$|\mathrm{Ob}\,\mathbf{C}| = 1$</span>，<span class="math">$|\mathrm{Ob}\,\mathbf{D}| = 2$</span>。不可能。</p>
+<p><strong>等价</strong>：取 <span class="math">$F \colon \mathbf{C} \to \mathbf{D}$</span>，<span class="math">$F(\ast) = A$</span>。</p>
+<ul><li><strong>忠实</strong>：<span class="math">$\mathbf{C}(\ast,\ast) = \{\mathrm{id}_\ast\}$</span>，<span class="math">$\mathbf{D}(A,A) = \{\mathrm{id}_A\}$</span>，映射是双射，成立</li><li><strong>满</strong>：同上，成立</li><li><strong>本质满</strong>：<span class="math">$A \cong A$</span>；<span class="math">$B \cong A$</span>（由 <span class="math">$f$</span> 给出）。<span class="math">$\mathbf{D}$</span> 的每个对象都在本质像里</li></ul>
+<p>三条齐备，<span class="math">$F$</span> 是等价。</p>
+<p><strong>结论</strong>：<span class="math">$\mathbf{C} \simeq \mathbf{D}$</span>，但 <span class="math">$\mathbf{C} \not\cong \mathbf{D}$</span>。</p>
+<h2>三、两个坑（都踩过）</h2>
+<p><strong>坑一：范畴公理的检查口径</strong></p>
+<p>G2 第一版把"不可复合的态射对"也拿来比恒等律，结果 <span class="math">$D$</span> 被判成非法范畴。修法：给每个态射标注源与靶，复合前先检查 <span class="math">$\mathrm{src}(h) = \mathrm{tgt}(k)$</span>，不成立就跳过。</p>
+<p><strong>坑二：等价的三条缺一不可</strong></p>
+<p>满忠实只保证"箭头层面不变形"，本质满才保证"对象层面不漏"。缺本质满，得到的是<strong>全忠实函子</strong>，不是等价。</p>
+<h2>四、脚本原文</h2>
+<pre><code class="language-python">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+&quot;&quot;&quot;第 4 期算据：范畴论作为一种语言。
+
+G1 偏序集作为范畴：对象没有&quot;内部&quot;，只有箭头
+G2 等价但不同构：一个对象 vs 两个同构对象
+   —— 这是范畴论最深的自由：可以选择&quot;什么叫一样&quot;
+G3 Cat 不是小范畴：语言谈论自己时的大小代价
+G4 自然变换的交换方块与复合
+
+纯标准库。
+&quot;&quot;&quot;
+
+def banner(t):
+    print(&quot;\n&quot; + &quot;=&quot; * 68)
+    print(t)
+    print(&quot;=&quot; * 68)
+
+# ============================================================== G1
+banner(&quot;G1  偏序集作为范畴&quot;)
+
+objs = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+le = {(&quot;a&quot;, &quot;a&quot;), (&quot;a&quot;, &quot;b&quot;), (&quot;a&quot;, &quot;c&quot;),
+      (&quot;b&quot;, &quot;b&quot;), (&quot;b&quot;, &quot;c&quot;),
+      (&quot;c&quot;, &quot;c&quot;)}
+
+print(f&quot;对象：{objs}&quot;)
+print(f&quot;态射（即 &lt;= 关系的对）：{len(le)} 个&quot;)
+
+def comp(p, q):
+    if p[1] != q[0]:
+        return None
+    return (p[0], q[1])
+
+has_id = all((x, x) in le for x in objs)
+closed = all(comp(p, q) in le for p, q in
+             [(p, q) for p in le for q in le] if comp(p, q))
+assoc = all(
+    comp(comp(p, q), r) == comp(p, comp(q, r))
+    for p in le for q in le for r in le
+    if comp(p, q) and comp(q, r)
+)
+
+print(f&quot;恒等态射齐备：{has_id}&quot;)
+print(f&quot;复合封闭：{closed}&quot;)
+print(f&quot;结合律成立：{assoc}&quot;)
+print()
+print(&quot;--&gt; 一个偏序集就是一个范畴：对象是元素，态射是 &lt;=。&quot;)
+print(&quot;    这里没有任何「对象的内部结构」，只有谁指向谁。&quot;)
+
+# ============================================================== G2
+banner(&quot;G2  等价但不同构：范畴论的自由所在&quot;)
+
+C_obj = {&quot;*&quot;}
+C_Hom = {(&quot;*&quot;, &quot;*&quot;): {&quot;id*&quot;}}
+
+D_obj = {&quot;A&quot;, &quot;B&quot;}
+D_Hom = {
+    (&quot;A&quot;, &quot;A&quot;): {&quot;idA&quot;},
+    (&quot;A&quot;, &quot;B&quot;): {&quot;f&quot;},
+    (&quot;B&quot;, &quot;A&quot;): {&quot;g&quot;},
+    (&quot;B&quot;, &quot;B&quot;): {&quot;idB&quot;},
+}
+D_comp = {
+    (&quot;idA&quot;, &quot;idA&quot;): &quot;idA&quot;, (&quot;f&quot;, &quot;idA&quot;): &quot;f&quot;, (&quot;g&quot;, &quot;f&quot;): &quot;idA&quot;,
+    (&quot;idB&quot;, &quot;idB&quot;): &quot;idB&quot;, (&quot;g&quot;, &quot;idB&quot;): &quot;g&quot;, (&quot;f&quot;, &quot;g&quot;): &quot;idB&quot;,
+    (&quot;idA&quot;, &quot;g&quot;): &quot;g&quot;, (&quot;idB&quot;, &quot;f&quot;): &quot;f&quot;,
+}
+
+# 每个态射的源与靶
+src = {&quot;idA&quot;: &quot;A&quot;, &quot;f&quot;: &quot;A&quot;, &quot;g&quot;: &quot;B&quot;, &quot;idB&quot;: &quot;B&quot;}
+tgt = {&quot;idA&quot;: &quot;A&quot;, &quot;f&quot;: &quot;B&quot;, &quot;g&quot;: &quot;A&quot;, &quot;idB&quot;: &quot;B&quot;}
+
+def Dc(h, k):
+    &quot;&quot;&quot;先 k 后 h：k: X-&gt;Y, h: Y-&gt;Z&quot;&quot;&quot;
+    if src.get(h) != tgt.get(k):
+        return None          # 不可复合
+    return D_comp.get((h, k))
+
+# 恒等律：只对合法复合检查
+ok_left = all(Dc(&quot;idA&quot;, k) == k for k in [&quot;idA&quot;, &quot;g&quot;])   # 靶为 A 的态射
+ok_right = all(Dc(k, &quot;idA&quot;) == k for k in [&quot;idA&quot;, &quot;f&quot;])  # 源为 A 的态射
+ok_left = ok_left and all(Dc(&quot;idB&quot;, k) == k for k in [&quot;idB&quot;, &quot;f&quot;])
+ok_right = ok_right and all(Dc(k, &quot;idB&quot;) == k for k in [&quot;idB&quot;, &quot;g&quot;])
+
+# 结合律：只对连续可复合的三元组检查
+morphs = [&quot;idA&quot;, &quot;f&quot;, &quot;g&quot;, &quot;idB&quot;]
+assoc_D = True
+for h in morphs:
+    for k in morphs:
+        for m in morphs:
+            if Dc(k, m) is None or Dc(h, k) is None:
+                continue
+            if Dc(Dc(h, k), m) != Dc(h, Dc(k, m)):
+                assoc_D = False
+print(&quot;D 是合法范畴：&quot;, ok_left and ok_right and assoc_D)
+print(f&quot;C 的对象数：{len(C_obj)}，D 的对象数：{len(D_obj)}&quot;)
+print()
+print(&quot;两者同构吗？&quot;)
+print(f&quot;  范畴同构要求对象集双射：{len(C_obj)} vs {len(D_obj)} → 不可能&quot;)
+print(&quot;  → C 与 D 不同构&quot;)
+print()
+print(&quot;两者等价吗？（函子 F: C -&gt; D，F(*) = A）&quot;)
+print(f&quot;  Hom_C(*,*) = {C_Hom[(&#x27;*&#x27;,&#x27;*&#x27;)]}，大小 1&quot;)
+print(f&quot;  Hom_D(A,A) = {D_Hom[(&#x27;A&#x27;,&#x27;A&#x27;)]}，大小 1&quot;)
+print(&quot;  → 满忠实成立（两侧都是 1 元集）&quot;)
+print(&quot;  → 本质满成立（A ≅ A；B ≅ A 由 f 给出）&quot;)
+print()
+print(&quot;--&gt; C 与 D 等价，但不同构。&quot;)
+print(&quot;    范畴论允许把「两个对象、彼此同构」与「一个对象」看作同一件事。&quot;)
+print(&quot;    它的自由不在能造新对象，在能重新规定什么叫「一样」。&quot;)
+
+# ============================================================== G3
+banner(&quot;G3  Cat 不是小范畴：语言谈论自己的代价&quot;)
+
+print(&quot;小范畴：对象集与态射集都是集合&quot;)
+print(&quot;大范畴：不满足上述条件&quot;)
+print()
+print(&quot;Cat = 所有小范畴构成的范畴&quot;)
+print(&quot;  若 Cat 自己是小范畴，则它有一个对象集，包含所有小范畴&quot;)
+print(&quot;  可用分离原则构造「不含自身的小范畴」的范畴 —— 与罗素悖论同型&quot;)
+print()
+print(&quot;  结论：Cat 是大范畴&quot;)
+print()
+print(&quot;--&gt; 一门能谈论所有数学结构的语言，不能无代价地谈论自己的全体。&quot;)
+print(&quot;    这个代价和 1901 年那个悖论是同一个。&quot;)
+
+# ============================================================== G4
+banner(&quot;G4  自然变换的交换方块与复合&quot;)
+
+F = {&quot;a&quot;: {0}, &quot;b&quot;: {0, 1}, &quot;c&quot;: {0, 1, 2}}
+G = {&quot;a&quot;: {0}, &quot;b&quot;: {0, 1}, &quot;c&quot;: {0, 1, 2}}
+H = {&quot;a&quot;: {0}, &quot;b&quot;: {0, 1}, &quot;c&quot;: {0, 1, 2}}
+on = {&quot;ab&quot;: lambda s: s, &quot;bc&quot;: lambda s: s, &quot;ac&quot;: lambda s: s}
+
+alpha = {k: (lambda s: s) for k in &quot;abc&quot;}
+beta = {k: (lambda s: s) for k in &quot;abc&quot;}
+
+def check_nat(al, F_, G_, on):
+    for X, Y, m in [(&quot;a&quot;, &quot;b&quot;, &quot;ab&quot;), (&quot;b&quot;, &quot;c&quot;, &quot;bc&quot;), (&quot;a&quot;, &quot;c&quot;, &quot;ac&quot;)]:
+        for s in F_[X]:
+            if on[m](al[X](s)) != al[Y](on[m](s)):
+                return False
+    return True
+
+print(&quot;alpha: F =&gt; G 自然：&quot;, check_nat(alpha, F, G, on))
+print(&quot;beta : G =&gt; H 自然：&quot;, check_nat(beta, G, H, on))
+comp_nat = {k: (lambda s, k=k: beta[k](alpha[k](s))) for k in &quot;abc&quot;}
+print(&quot;beta∘alpha: F =&gt; H 自然：&quot;, check_nat(comp_nat, F, H, on))
+print()
+print(&quot;--&gt; 自然变换可复合，且复合后仍自然。&quot;)
+print(&quot;    函子映射范畴，自然变换映射函子：这就是层层抬升。&quot;)
+
+banner(&quot;结论&quot;)
+print(&quot;G1 偏序集是范畴：对象无内部，只有箭头&quot;)
+print(&quot;G2 等价 ≠ 同构：等价但不同构的实例已构造&quot;)
+print(&quot;G3 Cat 是大范畴：谈论所有数学结构的语言，不能无代价谈论自己&quot;)
+print(&quot;G4 自然变换可复合：数学谈论数学靠的是这一层层抬升&quot;)</code></pre>
+<h2>五、实跑输出</h2>
+<pre><code class="language-text">
+====================================================================
+G1  偏序集作为范畴
+====================================================================
+对象：[&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]
+态射（即 &lt;= 关系的对）：6 个
+恒等态射齐备：True
+复合封闭：True
+结合律成立：True
+
+--&gt; 一个偏序集就是一个范畴：对象是元素，态射是 &lt;=。
+    这里没有任何「对象的内部结构」，只有谁指向谁。
+
+====================================================================
+G2  等价但不同构：范畴论的自由所在
+====================================================================
+D 是合法范畴： True
+C 的对象数：1，D 的对象数：2
+
+两者同构吗？
+  范畴同构要求对象集双射：1 vs 2 → 不可能
+  → C 与 D 不同构
+
+两者等价吗？（函子 F: C -&gt; D，F(*) = A）
+  Hom_C(*,*) = {&#x27;id*&#x27;}，大小 1
+  Hom_D(A,A) = {&#x27;idA&#x27;}，大小 1
+  → 满忠实成立（两侧都是 1 元集）
+  → 本质满成立（A ≅ A；B ≅ A 由 f 给出）
+
+--&gt; C 与 D 等价，但不同构。
+    范畴论允许把「两个对象、彼此同构」与「一个对象」看作同一件事。
+    它的自由不在能造新对象，在能重新规定什么叫「一样」。
+
+====================================================================
+G3  Cat 不是小范畴：语言谈论自己的代价
+====================================================================
+小范畴：对象集与态射集都是集合
+大范畴：不满足上述条件
+
+Cat = 所有小范畴构成的范畴
+  若 Cat 自己是小范畴，则它有一个对象集，包含所有小范畴
+  可用分离原则构造「不含自身的小范畴」的范畴 —— 与罗素悖论同型
+
+  结论：Cat 是大范畴
+
+--&gt; 一门能谈论所有数学结构的语言，不能无代价地谈论自己的全体。
+    这个代价和 1901 年那个悖论是同一个。
+
+====================================================================
+G4  自然变换的交换方块与复合
+====================================================================
+alpha: F =&gt; G 自然： True
+beta : G =&gt; H 自然： True
+beta∘alpha: F =&gt; H 自然： True
+
+--&gt; 自然变换可复合，且复合后仍自然。
+    函子映射范畴，自然变换映射函子：这就是层层抬升。
+
+====================================================================
+结论
+====================================================================
+G1 偏序集是范畴：对象无内部，只有箭头
+G2 等价 ≠ 同构：等价但不同构的实例已构造
+G3 Cat 是大范畴：谈论所有数学结构的语言，不能无代价谈论自己
+G4 自然变换可复合：数学谈论数学靠的是这一层层抬升
+</code></pre>
+<hr class="section-rule">
+<p>*2026-10-26 · 附录 v1.0 · 嵌入代码与源文件逐字节一致*</p>
+</article><p class="appendix-link">返回正文：<a href="/issues/04.html">第 4 期</a></p>
+</main>
+<footer class="site-footer">
+  <p><strong>数学如隐喻</strong> · Mathematics as Metaphor</p>
+  <p>源稿与算据：<a href="https://github.com/skyboyhjj/math-as-metaphor">github.com/skyboyhjj/math-as-metaphor</a></p>
+  <p class="license">正文与附录采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>，脚本采用 MIT。</p>
+</footer>
+</div>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

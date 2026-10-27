@@ -6,6 +6,8 @@
 
 本仓库是微信公众号合集【数学如隐喻】的配套资料：每期正文、附录证明、可复算脚本、以及写作过程中核过的原始材料。
 
+在线阅读：**<https://www.huiskill.org/>**
+
 ---
 
 ## 每期索引
@@ -44,9 +46,23 @@ python3 scripts/verify_yoneda.py      # Yoneda 引理的枚举验证（五组）
 python3 scripts/verify_category.py    # 范畴论四组：等价≠同构、Cat 非小范畴等
 python3 scripts/verify_arrow_g4.py    # 阿罗定理：穷举聚合规则，看独裁是否唯一幸存
 python3 scripts/check_github_math.py  # 发布前检查：公式里有没有 GitHub 不认的宏
+python3 scripts/make_site.py          # 由 issues/ 与 appendices/ 生成网站到 web/
 ```
 
-每个脚本都会打印分组标题、验算过程与结论，不需要额外参数。
+每个脚本都会打印分组标题、验算过程与结论，不需要额外参数。`make_site.py` 除外，它产出文件。
+
+### 关于 `make_site.py`
+
+站点不是手写的，是从 Markdown 生成的。改完正文跑一遍：
+
+```bash
+python3 scripts/make_site.py          # 生成到 web/
+python3 scripts/make_site.py --check  # 只统计不写盘
+```
+
+它做四件事：把 `issues/` 与 `appendices/` 渲染成带语义标签的 HTML；把公式从 `` $x$ `` 还原成 `$x$` 交给 MathJax；把 `.md` 链接改写成站内 `.html`；顺手生成首页索引与搜索数据。
+
+站点样式在 `templates/style.css`，配色沿用公众号的朱砂（`#8b1e22`）与宣纸（`#faf8f0`）。
 
 ### 关于 `check_github_math.py`
 
@@ -68,27 +84,38 @@ python3 scripts/check_github_math.py --self-test  # 验证脚本自身有效（�
 
 它拦的是这一类：`\operatorname` `\bm` `\color` `\bbox` `\def` `\newcommand` `\tag` `\label` `\require` `\ce` 等——宏定义、样式注入、公式编号、扩展包加载，GitHub 一律拒绝。围栏代码块会被整段跳过，不会把 Python 的 `\n` 当成宏。
 
-本仓库当前状态：10 个 Markdown、251 个公式片段，全部通过。
+本仓库当前状态：11 个 Markdown、251 个公式片段，全部通过。
 
 ---
 
 ## 目录
 
 ```
-issues/       每期正文（Markdown，与公众号发布版基本一致）
+issues/       每期正文（Markdown，唯一真源）
 appendices/   附录：证明拆解与算据汇编
-scripts/      可复算脚本（纯标准库）
+scripts/      算据脚本与站点生成脚本（纯标准库）
+templates/    站点样式表
+drafts/       公众号中间稿（AI 加工后、发布前）
+dist/wechat/  公众号粘贴用 HTML
+web/          网站（由 make_site.py 生成，不手改）
 notes/        规划与方法笔记
 sources/      核过的原始材料（如曼宁 1990 讲稿英文全本）
-web/          公众号直接粘贴用的 HTML
 archive/      未采用的备选稿
 ```
 
 ### 关于 `web/`
 
-公众号编辑器不支持 LaTeX，公式必须转成 Unicode 才能粘贴。`web/` 里的 HTML 就是转换后的版本：浏览器打开 → 全选 → 复制 → 粘贴进编辑器即可。
+`web/` 是**生成物**，不是手写页。里面是语义化的 HTML（`h1`/`h2`/`p`/`table`）、一份全站 CSS、首页索引与搜索数据。公式保留 LaTeX 原样，由页面加载的 MathJax CDN 渲染。
 
-转换脚本见 `scripts/`（`md2wechat` 未随仓库发布，因依赖本项目特定的排版样式；如需可另行索取）。
+由 Cloudflare Pages 直接托管，`Build command` 留空、输出目录填 `web`。HTML 在本地生成好再 push，线上不依赖 Python 环境。
+
+要改页面外观，改 `templates/style.css` 后重跑 `make_site.py`，不要直接编辑 `web/` 里的文件。
+
+### 关于 `dist/wechat/`
+
+公众号编辑器不支持 LaTeX，也不接受外部样式表——公式必须转成 Unicode，样式必须全部内联。`dist/wechat/` 里是转换后的粘贴版：浏览器打开 → 全选 → 复制 → 粘贴进编辑器。
+
+它与 `web/` 是两套产物，不能互换：微信会剥离 `<style>`、忽略 class 选择器、移除 `<script>`，所以站点那套语义化 HTML 贴过去会散架。
 
 ### 关于 `sources/`
 
@@ -98,13 +125,19 @@ archive/      未采用的备选稿
 
 ---
 
-## 与公众号的关系
+## 三个地方，各管一件事
 
-公众号只放「结果」：每期的正文与结论。
+| 位置 | 适合做的事 |
+| :- | :- |
+| 公众号 | 读。轻、顺、不打断，手机上能一口气看完。 |
+| 网站 `huiskill.org` | 查与回看。目录清楚，公式可缩放，上下篇串得起来。 |
+| 这个仓库 | 验。源码、脚本、原始材料，能自己跑一遍。 |
 
-推导、证明、可复算的代码，都放在这个仓库里，通过文末的「阅读原文」跳转过来。
+公众号只放「结果」：每期的正文与结论。推导、证明、可复算的代码放在仓库里，通过文末的「阅读原文」跳转过来。
 
-这样做的理由很简单：**公众号适合读，GitHub 适合查**。同一个结论，读者信不信，取决于能不能自己算一遍——那部分不该被排版吃掉。
+这样分工的理由很简单：**公众号适合读，GitHub 适合查**。同一个结论，读者信不信，取决于能不能自己算一遍——那部分不该被排版吃掉。
+
+站点由仓库里的 Markdown 生成，所以三处内容始终同源：改 `issues/` 里的源稿，跑一次 `make_site.py`，网站跟着变；公众号那边重走一次转换。
 
 ---
 

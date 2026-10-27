@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>目录 · 数学如隐喻</title>
+<meta name="description" content="数学是自然语言的一种专门的方言，因此是一种隐喻。">
+<meta property="og:title" content="目录">
+<meta property="og:site_name" content="数学如隐喻">
+<meta property="og:description" content="数学是自然语言的一种专门的方言，因此是一种隐喻。">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+<script src="/assets/search-data.js"></script>
+<script defer src="/assets/search.js"></script>
+</head>
+<body>
+<div class="paper">
+<nav class="top-nav"><a href="/">目录</a><a href="/issues/01.html">第 1 期</a><a href="/issues/02.html">第 2 期</a><a href="/issues/03.html">第 3 期</a><a href="/issues/04.html">第 4 期</a></nav>
+<main>
+
+<header class="hero">
+  <h1 class="hero-title">数学如隐喻</h1>
+  <p class="hero-sub">Mathematics as Metaphor</p>
+  <p class="hero-quote">「数学是自然语言的一种专门的方言，因此是一种隐喻。」</p>
+  <p class="hero-note">这个合集沿着这条线读下去：数学如何用一套自造的语言转译世界，转译过程损耗了什么，又有哪些东西因此才能被说出口。</p>
+</header>
+
+<section class="card-list">
+<a class="card" href="/issues/01.html"><span class="card-no">01</span><span class="card-body"><strong>曼宁说「数学是隐喻」，他说的不是「数学像诗」</strong><span class="card-sub">为什么表示必有损</span></span></a>
+<a class="card" href="/issues/02.html"><span class="card-no">02</span><span class="card-body"><strong>阿罗不可能定理：为什么「公平投票」注定无解？</strong><span class="card-sub">公理是选的，结论是被逼出来的</span></span></a>
+<a class="card" href="/issues/03.html"><span class="card-no">03</span><span class="card-body"><strong>对象是关系的总和吗：从 Hahn-Banach 到 Yoneda</strong><span class="card-sub">对象由关系决定，那还剩下什么自由</span></span><span class="card-ap">附录</span></a>
+<a class="card" href="/issues/04.html"><span class="card-no">04</span><span class="card-body"><strong>当数学开始谈论自己：范畴论作为一种语言</strong><span class="card-sub">一门语言如何自给自足</span></span><span class="card-ap">附录</span></a>
+<div class="card planned"><span class="card-no">05</span><span class="card-body"><strong>一个符号承担两件事：转译损耗的五种形态</strong><span class="card-sub">翻译必有损，损在哪</span></span><span class="card-ap">待写</span></div>
+<div class="card planned"><span class="card-no">06</span><span class="card-body"><strong>数学的本质恰恰在于其自由</strong><span class="card-sub">那自由到底剩多少</span></span><span class="card-ap">待写</span></div>
+</section>
+
+<section class="about">
+  <h2>关于这个站</h2>
+  <p>每期正文与附录在 <a href="https://github.com/skyboyhjj/math-as-metaphor">GitHub 仓库</a>公开，包含可复算的验证脚本——正文里的具体断言，背后都有一段能跑的代码。</p>
+  <p>公众号只放结果，推导与算据放在仓库里，文末的「阅读原文」跳转过去。</p>
+</section>
+
+<section class="search-box">
+  <input id="q" type="search" placeholder="搜索标题与正文关键词" autocomplete="off">
+  <div id="results" class="search-results"></div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <p><strong>数学如隐喻</strong> · Mathematics as Metaphor</p>
+  <p>源稿与算据：<a href="https://github.com/skyboyhjj/math-as-metaphor">github.com/skyboyhjj/math-as-metaphor</a></p>
+  <p class="license">正文与附录采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>，脚本采用 MIT。</p>
+</footer>
+</div>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>附录 · 第 3 期 · 数学如隐喻</title>
+<meta name="description" content="附录：Yoneda 引理证明拆解与算据">
+<meta property="og:title" content="附录 · 第 3 期">
+<meta property="og:site_name" content="数学如隐喻">
+<meta property="og:description" content="附录：Yoneda 引理证明拆解与算据">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+
+</head>
+<body>
+<div class="paper">
+<nav class="top-nav"><a href="/">目录</a><a href="/issues/01.html">第 1 期</a><a href="/issues/02.html">第 2 期</a><a href="/issues/03.html" class="on">第 3 期</a><a href="/issues/04.html">第 4 期</a></nav>
+<main>
+<article class="issue appendix">
+<h1>附录：Yoneda 引理证明拆解与算据</h1>
+<p class="issue-meta"><strong>配套文档</strong>：<a href="/issues/03.html"><code>issues/03-object-as-relations.md</code></a> ｜ <strong>日期</strong>：2026-10-26 ｜ <strong>运行环境</strong>：Python 3.12，纯标准库（无需 numpy） ｜ <strong>源文件 md5</strong>：<code>0f18fc901ba9218e4311394c2bde02f1</code></p>
+<h2>一、引理的准确陈述</h2>
+<p>设 <span class="math">$\mathcal{C}$</span> 是小范畴，<span class="math">$F \colon \mathcal{C} \to \mathbf{Set}$</span> 是函子，<span class="math">$A \in \mathcal{C}$</span>。则有自然双射</p>
+<p><span class="math">$\Phi \colon \mathrm{Nat}\big(\mathcal{C}(A,-),\, F\big) \;\longrightarrow\; F(A)$</span></p>
+<p>其中 <span class="math">$\mathrm{Nat}$</span> 表示自然变换的全集。并且这个双射<strong>同时自然于 <span class="math">$A$</span> 与 <span class="math">$F$</span></strong>。</p>
+<blockquote><p>记号说明：<span class="math">$\mathcal{C}(A,-)$</span> 与 <span class="math">$h^A$</span> 是同一样东西。</p></blockquote>
+<hr class="section-rule">
+<h2>二、双向构造</h2>
+<h3>2.1 正向 <span class="math">$\Phi$</span>：自然变换 → 元素</h3>
+<p>给定自然变换 <span class="math">$\alpha \colon \mathcal{C}(A,-) \Rightarrow F$</span>，定义</p>
+<p><span class="math">$\Phi(\alpha) := \alpha_A(\mathrm{id}_A) \;\in\; F(A)$</span></p>
+<p><strong>这一步只用了一个信息：恒等态射</strong>。其余全被扔掉。</p>
+<h3>2.2 反向 <span class="math">$\Psi$</span>：元素 → 自然变换</h3>
+<p>给定 <span class="math">$x \in F(A)$</span>，对每个对象 <span class="math">$B$</span> 定义分量</p>
+<p><span class="math">$\Psi(x)_B \colon \mathcal{C}(A,B) \to F(B), \qquad f \mapsto F(f)(x)$</span></p>
+<p>即"把 <span class="math">$x$</span> 沿着 <span class="math">$f$</span> 推过去"。</p>
+<hr class="section-rule">
+<h2>三、验证 <span class="math">$\Psi(x)$</span> 确实是自然变换</h2>
+<p>需要验证：对任意 <span class="math">$g \colon B \to C$</span> 与 <span class="math">$f \colon A \to B$</span>，有</p>
+<p><span class="math">$F(g)\big(\Psi(x)_B(f)\big) = \Psi(x)_C\big(\mathcal{C}(A,g)(f)\big)$</span></p>
+<p><strong>左边</strong>：</p>
+<p><span class="math">$F(g)\big(F(f)(x)\big) = \big(F(g) \circ F(f)\big)(x)$</span></p>
+<p><strong>右边</strong>：</p>
+<p><span class="math">$\Psi(x)_C(g \circ f) = F(g \circ f)(x)$</span></p>
+<p>由 <span class="math">$F$</span> 是函子，<span class="math">$F(g) \circ F(f) = F(g \circ f)$</span>。两边相等。<span class="math">$\square$</span></p>
+<blockquote><p><strong>这一步只用了一条性质：函子保持复合</strong>。没有任何额外条件。</p></blockquote>
+<hr class="section-rule">
+<h2>四、验证 <span class="math">$\Phi \circ \Psi = \mathrm{id}$</span></h2>
+<p><span class="math">$\Phi\big(\Psi(x)\big) = \Psi(x)_A(\mathrm{id}_A) = F(\mathrm{id}_A)(x) = \mathrm{id}_{F(A)}(x) = x$</span></p>
+<p>第三处用了 <span class="math">$F$</span> 保持恒等。<span class="math">$\square$</span></p>
+<hr class="section-rule">
+<h2>五、验证 <span class="math">$\Psi \circ \Phi = \mathrm{id}$</span></h2>
+<p>这一边是整条引理里唯一需要"动脑"的地方——<strong>它必须用自然性</strong>。</p>
+<p>要证：对任意 <span class="math">$\alpha$</span>、任意对象 <span class="math">$B$</span>、任意 <span class="math">$f \colon A \to B$</span>，</p>
+<p><span class="math">$\Psi\big(\Phi(\alpha)\big)_B(f) = \alpha_B(f)$</span></p>
+<p>左边展开：</p>
+<p><span class="math">$\Psi\big(\Phi(\alpha)\big)_B(f) = F(f)\big(\alpha_A(\mathrm{id}_A)\big)$</span></p>
+<p>现在用 <span class="math">$\alpha$</span> 的自然性。对 <span class="math">$f \colon A \to B$</span>，有交换方块：</p>
+<pre><code class="language-text">        C(A,f)
+C(A,A) ─────────→ C(A,B)
+   │                 │
+ α_A│                 │α_B
+   ↓                 ↓
+ F(A) ────────────→ F(B)
+        F(f)</code></pre>
+<p>即</p>
+<p><span class="math">$\alpha_B \circ \mathcal{C}(A,f) = F(f) \circ \alpha_A$</span></p>
+<p>取 <span class="math">$\mathrm{id}_A$</span> 代入：</p>
+<p><span class="math">$\alpha_B(f) = \alpha_B\big(\mathcal{C}(A,f)(\mathrm{id}_A)\big) = F(f)\big(\alpha_A(\mathrm{id}_A)\big)$</span></p>
+<p>右边正是我们要证的左边。</p>
+<p>所以 <span class="math">$\Psi(\Phi(\alpha))_B(f) = \alpha_B(f)$</span>。<span class="math">$\square$</span></p>
+<blockquote><p><strong>这就是引理的核心：自然性把"在恒等处的取值"输运到"任意态射处的取值"。</strong></p><p>没有自然性，这一步断掉，引理不成立。</p></blockquote>
+<hr class="section-rule">
+<h2>六、两个方向的自然性</h2>
+<h3>6.1 对 <span class="math">$F$</span> 自然</h3>
+<p>给定 <span class="math">$\eta \colon F \Rightarrow G$</span>，要证</p>
+<p><span class="math">$\Phi_G(\eta \circ \alpha) = \eta_A\big(\Phi_F(\alpha)\big)$</span></p>
+<p>左边：</p>
+<p><span class="math">$(\eta \circ \alpha)_A(\mathrm{id}_A) = \eta_A\big(\alpha_A(\mathrm{id}_A)\big)$</span></p>
+<p>右边：</p>
+<p><span class="math">$\eta_A\big(\Phi_F(\alpha)\big) = \eta_A\big(\alpha_A(\mathrm{id}_A)\big)$</span></p>
+<p>相等。<span class="math">$\square$</span>（这一步是逐点定义的直接结果，无需自然性。）</p>
+<h3>6.2 对 <span class="math">$A$</span> 自然</h3>
+<p>对 <span class="math">$u \colon A \to A'$</span>，<span class="math">$A \mapsto \mathrm{Nat}(\mathcal{C}(A,-),F)$</span> 是<strong>协变</strong>的。这一点要说清，否则容易错：</p>
+<ul><li><span class="math">$A \mapsto \mathcal{C}(A,-)$</span> 本身是<strong>反变</strong>的：<span class="math">$u$</span> 先给出 <span class="math">$\mathcal{C}(u,-) \colon h^{A'} \Rightarrow h^{A}$</span></li><li>而 <span class="math">$\mathrm{Nat}(-,\,F)$</span> 对第一个变量也是<strong>反变</strong>的</li><li><strong>两个反变复合得协变</strong>，所以 <span class="math">$\mathrm{Nat}(\mathcal{C}(A,-),F)$</span> 随 <span class="math">$A$</span> 协变，与 <span class="math">$F(A)$</span> 同向</li></ul>
+<p>于是 <span class="math">$u$</span> 诱导的映射是</p>
+<p><span class="math">$\mathrm{Nat}(\mathcal{C}(A,-),F) \;\longrightarrow\; \mathrm{Nat}(\mathcal{C}(A',-),F), \qquad \alpha \mapsto \alpha \circ \mathcal{C}(u,-)$</span></p>
+<p>要证</p>
+<p><span class="math">$\Phi_{A'}\big(\alpha \circ \mathcal{C}(u,-)\big) = F(u)\big(\Phi_A(\alpha)\big)$</span></p>
+<p>左边：</p>
+<p><span class="math">$\big(\alpha \circ \mathcal{C}(u,-)\big)_{A'}(\mathrm{id}_{A'}) = \alpha_{A'}\big(\mathcal{C}(u,A')(\mathrm{id}_{A'})\big) = \alpha_{A'}(u)$</span></p>
+<p>右边：</p>
+<p><span class="math">$F(u)\big(\alpha_A(\mathrm{id}_A)\big)$</span></p>
+<p>用 <span class="math">$\alpha$</span> 在 <span class="math">$u$</span> 处自然性：</p>
+<pre><code class="language-text">        C(A,u)
+C(A,A) ─────────→ C(A,A&#x27;)
+   │                 │
+ α_A│                 │α_A&#x27;
+   ↓                 ↓
+ F(A) ────────────→ F(A&#x27;)
+        F(u)</code></pre>
+<p><span class="math">$\alpha_{A'} \circ \mathcal{C}(A,u) = F(u) \circ \alpha_A$</span>，取 <span class="math">$\mathrm{id}_A$</span>：</p>
+<p><span class="math">$\alpha_{A'}(u) = F(u)\big(\alpha_A(\mathrm{id}_A)\big)$</span></p>
+<p>相等。<span class="math">$\square$</span></p>
+<hr class="section-rule">
+<h2>七、推论：Yoneda 嵌入满忠实</h2>
+<p>定义</p>
+<p><span class="math">$h \colon \mathcal{C}^{\mathrm{op}} \to [\mathcal{C}, \mathbf{Set}], \qquad A \mapsto \mathcal{C}(A,-)$</span></p>
+<p>对任意 <span class="math">$A, B$</span>，把引理用于 <span class="math">$F = \mathcal{C}(B,-)$</span>：</p>
+<p><span class="math">$\mathrm{Nat}\big(\mathcal{C}(A,-),\, \mathcal{C}(B,-)\big) \;\cong\; \mathcal{C}(B,-)(A) \;=\; \mathcal{C}(B,A)$</span></p>
+<p>而 <span class="math">$\mathrm{Hom}_{\mathcal{C}^{\mathrm{op}}}(A,B) = \mathcal{C}(B,A)$</span>。</p>
+<p><strong>两边相等，故 <span class="math">$h$</span> 在 Hom 集上是双射——满且忠实。</strong></p>
+<blockquote><p><strong>方向提醒</strong>：<span class="math">$A \mapsto \mathcal{C}(A,-)$</span> 是<strong>反变</strong>的，所以嵌入的是 <span class="math">$\mathcal{C}^{\mathrm{op}}$</span>，不是 <span class="math">$\mathcal{C}$</span>。这是最容易写错的一处。</p><p>若改用 <span class="math">$A \mapsto \mathcal{C}(-,A)$</span>，得到的是协变嵌入 <span class="math">$\mathcal{C} \to [\mathcal{C}^{\mathrm{op}}, \mathbf{Set}]$</span>。</p></blockquote>
+<hr class="section-rule">
+<h2>八、边界：满忠实不等于等价</h2>
+<p><span class="math">$h$</span> 满忠实，但它<strong>一般不是本质满射</strong>——不是每个函子都可表。</p>
+<p><strong>例</strong>：取 <span class="math">$\mathcal{C}$</span> 为 <span class="math">$A \to B \to C$</span>，令</p>
+<p><span class="math">$G := h^A \sqcup h^B$</span></p>
+<p><span class="math">$G$</span> 不可表（下一节的算据 G4 逐项验过），但它按定义就是两个可表函子的余积。</p>
+<p><strong>补上这个缺口的是密度定理</strong>：</p>
+<p><span class="math">$F \;\cong\; \mathrm{colim}\big(h^{(\cdot)} \to F\big)$</span></p>
+<p>每个函子都是可表函子的余极限。所以"不可表"只意味着"不能由单个对象代表"，<strong>不意味着"不属于任何对象"</strong>。</p>
+<p>这一点是正文第四节的全部内容，也是我去年说错话的地方。</p>
+<hr class="section-rule">
+<h2>九、算据脚本</h2>
+<h3>9.1 五组在验什么</h3>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">组</th><th style="text-align:left">验什么</th><th style="text-align:left">与哪一节对应</th></tr></thead><tbody><tr><td style="text-align:left">G1</td><td style="text-align:left">有限维中 <span class="math">$x$</span> 由所有泛函取值完全决定</td><td style="text-align:left">正文第一节（Hahn-Banach 弱版）</td></tr><tr><td style="text-align:left">G2</td><td style="text-align:left">单对象范畴上 <span class="math">$\mathrm{Nat}(h^\ast,F)$</span> 的元素个数 <span class="math">$= \lvert F(\ast)\rvert$</span></td><td style="text-align:left">正文第二节（把 Yoneda 数出来）</td></tr><tr><td style="text-align:left">G3</td><td style="text-align:left"><span class="math">$\mathrm{Nat}(h^B,h^A)$</span> 的元素个数 <span class="math">$= \lvert\mathcal{C}(A,B)\rvert$</span></td><td style="text-align:left">附录第七节（嵌入满忠实）</td></tr><tr><td style="text-align:left">G4</td><td style="text-align:left"><span class="math">$G = h^A \sqcup h^B$</span> 不可表</td><td style="text-align:left">正文第四节、附录第八节</td></tr><tr><td style="text-align:left">G5</td><td style="text-align:left">密度定理的玩具版</td><td style="text-align:left">附录第八节</td></tr></tbody></table></div>
+<h3>9.2 两条必须避开的坑</h3>
+<p><strong>坑一：空函数不算自然变换。</strong></p>
+<p>G3 第一版写错了：程序允许把非空的 <span class="math">$\mathcal{C}(B,A)$</span> 映射成空集，于是数出了一个假自然变换。修法是显式检查"每个分量必须是<strong>全函数</strong>"（定义域每个元素都有像），并检查像落在陪域内。</p>
+<p><strong>坑二：方向容易反。</strong></p>
+<p><span class="math">$\mathrm{Nat}(h^A,h^B) \cong \mathcal{C}(B,A)$</span>，不是 <span class="math">$\mathcal{C}(A,B)$</span>。因为 <span class="math">$h$</span> 是反变嵌入。验算时把 A、B 摆对，数字才对得上。</p>
+<h3>9.3 脚本原文</h3>
+<pre><code class="language-python">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+&quot;&quot;&quot;第 3 期算据：从 Hahn-Banach 到 Yoneda。
+
+G1 Hahn-Banach 弱版：有限维 X 中 x 由 {f(x)} 完全决定
+G2 Monoid 范畴上的 Yoneda 双射：Nat(Hom(*,-), F) 的元素个数 = |F(*)|
+   —— 逐个数出来，不是引用定理
+G3 Yoneda 嵌入满忠实：Nat(Hom(A,-), Hom(B,-)) 的元素个数 = |Hom(A,B)|
+G4 不可表函子：G = Hom(A,-) ⊔ Hom(B,-) 不可表，但它自己就是两个可表函子的余积
+G5 密度定理玩具版：同一函子写成余极限
+
+纯标准库。
+&quot;&quot;&quot;
+
+import itertools
+
+def banner(t):
+    print(&quot;\n&quot; + &quot;=&quot; * 68)
+    print(t)
+    print(&quot;=&quot; * 68)
+
+# ============================================================== G1
+banner(&quot;G1  Hahn-Banach 弱版：x 由所有 f(x) 决定&quot;)
+
+import random
+random.seed(7)
+n = 3
+# 取一个非自反也不重要：随便一个有限维空间，X^* 就是 R^n
+X = [tuple(random.randint(-5, 5) for _ in range(n)) for _ in range(200)]
+# 泛函取标准基对偶（足以分离点）
+def evals(x):
+    return tuple(x)
+
+# 验证：x != 0 =&gt; 存在 f 使 f(x) != 0
+bad = [x for x in X if x != (0,) * n and all(v == 0 for v in evals(x))]
+print(f&quot;维度 {n}，样本 {len(X)} 个向量&quot;)
+print(f&quot;非零但所有泛函取值全为 0 的向量：{len(bad)} 个&quot;)
+print(&quot;--&gt; x = 0 当且仅当 f(x) = 0 对所有 f。弱版成立：点可由泛函分离&quot;)
+
+# 更强：x 由它对所有泛函的取值完全决定
+def fingerprint(x):
+    return tuple(f(x) for f in [lambda v, i=i: v[i] for i in range(n)])
+
+fp = {}
+collision = 0
+for x in X:
+    k = fingerprint(x)
+    if k in fp and fp[k] != x:
+        collision += 1
+    fp[k] = x
+print(f&quot;不同向量映射到同一指纹的次数：{collision}&quot;)
+print(&quot;--&gt; 指纹是单射：x 被外部探测完全决定（有限维、取遍 X^* 时）&quot;)
+
+# ============================================================== G2
+banner(&quot;G2  Monoid 范畴上的 Yoneda：逐个数 Nat(Hom(*,-), F)&quot;)
+
+# 单对象范畴：唯一对象 *，Hom(*,*) = M = Z/3
+M = [0, 1, 2]
+def madd(a, b):
+    return (a + b) % 3
+
+# F: M-set。取 X = Z/3，M 作用为加法
+def act(m, x):
+    return (m + x) % 3
+
+def F_on_morphism(m):
+    return lambda x: act(m, x)
+
+# Hom(*,-) 只有一个分量：M 上的左乘
+def h_on_morphism(m):
+    return lambda g: madd(m, g)
+
+# 自然变换 alpha: Hom(*,-) =&gt; F
+# 在唯一对象上就是一个映射 alpha: M -&gt; X，满足
+#   alpha(m + g) = m . alpha(g)  对一切 m, g
+def is_natural(alpha):
+    for m in M:
+        for g in M:
+            if alpha[madd(m, g)] != act(m, alpha[g]):
+                return False
+    return True
+
+naturals = []
+for vals in itertools.product([0, 1, 2], repeat=len(M)):
+    alpha = {m: vals[i] for i, m in enumerate(M)}
+    if is_natural(alpha):
+        naturals.append(alpha)
+
+print(f&quot;M = Z/3，F(*) = Z/3（M 作用为加法）&quot;)
+print(f&quot;满足自然性的 alpha: M -&gt; F(*) 共 {len(naturals)} 个&quot;)
+for a in naturals:
+    print(&quot;   &quot;, {k: a[k] for k in M})
+print(f&quot;|F(*)| = 3&quot;)
+print(f&quot;--&gt; Nat(Hom(*,-), F) 有 {len(naturals)} 个元素，等于 |F(*)| = 3。Yoneda 双射成立&quot;)
+
+# 再验：每个自然变换都由 alpha(id) 唯一决定（id = 0）
+print(&quot;\n按 alpha(0) 分组：&quot;)
+by_val = {}
+for a in naturals:
+    by_val.setdefault(a[0], []).append(a)
+for k, v in sorted(by_val.items()):
+    print(f&quot;   alpha(0) = {k} → {len(v)} 个自然变换&quot;)
+print(&quot;--&gt; 每个 alpha(0) 恰好对应一个自然变换：Phi: alpha |-&gt; alpha(id) 是双射&quot;)
+
+# ============================================================== G3
+banner(&quot;G3  Yoneda 嵌入满忠实：Nat(Hom(B,-), Hom(A,-)) = Hom(A,B)&quot;)
+
+# 范畴：A --f--&gt; B --g--&gt; C
+objs = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;]
+# Hom(X,Y) 的完整表
+Hom = {
+    (&quot;A&quot;, &quot;A&quot;): {&quot;idA&quot;}, (&quot;A&quot;, &quot;B&quot;): {&quot;f&quot;}, (&quot;A&quot;, &quot;C&quot;): {&quot;gf&quot;},
+    (&quot;B&quot;, &quot;B&quot;): {&quot;idB&quot;}, (&quot;B&quot;, &quot;C&quot;): {&quot;g&quot;},
+    (&quot;C&quot;, &quot;C&quot;): {&quot;idC&quot;},
+}
+def H(x, y):
+    return Hom.get((x, y), set())
+
+# 复合表：comp(g, f) = g o f
+def comp(h, k):
+    if h in (&quot;idA&quot;, &quot;idB&quot;, &quot;idC&quot;):
+        return k
+    if k in (&quot;idA&quot;, &quot;idB&quot;, &quot;idC&quot;):
+        return h
+    if h == &quot;g&quot; and k == &quot;f&quot;:
+        return &quot;gf&quot;
+    return None
+
+# 自然变换 alpha: h^B =&gt; h^A，分量 alpha_X: Hom(B,X) -&gt; Hom(A,X)
+# 要求：对每个 h: X-&gt;Y，alpha_Y(h o -) = h o alpha_X(-)
+def components_ok(alpha):
+    # alpha[X] 必须是 Hom(B,X) 到 Hom(A,X) 的【全函数】
+    for X in objs:
+        dom, cod = H(&quot;B&quot;, X), H(&quot;A&quot;, X)
+        if set(alpha[X].keys()) != dom:
+            return False                      # 未定义或不合法
+        if not set(alpha[X].values()) &lt;= cod:
+            return False                      # 像不在陪域内
+    # 自然性
+    for X in objs:
+        for Y in objs:
+            for h in H(X, Y):
+                for k in H(&quot;B&quot;, X):
+                    lhs = alpha[Y].get(comp(h, k))
+                    rhs = comp(h, alpha[X][k]) if alpha[X][k] else None
+                    if lhs != rhs:
+                        return False
+    return True
+
+# 枚举：alpha_A 只有空函数（Hom(B,A)=∅）；alpha_B 取值于 {f}；alpha_C 取值于 {gf}
+import itertools as it
+found = []
+for vb in [&quot;f&quot;]:
+    for vc in [&quot;gf&quot;]:
+        alpha = {&quot;A&quot;: {}, &quot;B&quot;: {&quot;idB&quot;: vb}, &quot;C&quot;: {&quot;g&quot;: vc}}
+        if components_ok(alpha):
+            found.append(alpha)
+
+print(&quot;范畴：A --f--&gt; B --g--&gt; C&quot;)
+print(f&quot;Hom(A,B) = {H(&#x27;A&#x27;,&#x27;B&#x27;)}，共 {len(H(&#x27;A&#x27;,&#x27;B&#x27;))} 个&quot;)
+print(f&quot;Nat(h^B, h^A) 的元素个数：{len(found)}&quot;)
+for a in found:
+    print(&quot;   &quot;, {k: v for k, v in a.items()})
+print(&quot;--&gt; 两侧都是 1：Yoneda 嵌入在这一例上满忠实&quot;)
+print()
+print(&quot;反向验证：&quot;)
+print(f&quot;Hom(B,A) = {H(&#x27;B&#x27;,&#x27;A&#x27;)}（空），共 {len(H(&#x27;B&#x27;,&#x27;A&#x27;))} 个&quot;)
+print(&quot;Nat(h^A, h^B) 应当也是 0 个——因为 alpha_A: Hom(A,A) -&gt; Hom(B,A) 无法定义&quot;)
+print(&quot;（非空集到空集不存在函数）&quot;)
+
+# ============================================================== G4
+banner(&quot;G4  不可表的函子：G = Hom(A,-) ⊔ Hom(B,-)&quot;)
+
+# 沿用 G3 的范畴与 Hom 表
+G = {Y: H(&quot;A&quot;, Y) | H(&quot;B&quot;, Y) for Y in objs}
+print(&quot;G = h^A ⊔ h^B 的取值：&quot;)
+for Y in objs:
+    print(f&quot;   G({Y}) = {sorted(G[Y])},  |G({Y})| = {len(G[Y])}&quot;)
+
+print()
+print(&quot;检查是否有对象 X 使 Hom(X,-) 与 G 同构（先比基数）：&quot;)
+ok_any = False
+for X in objs:
+    sizes = {Y: len(H(X, Y)) for Y in objs}
+    match = all(sizes[Y] == len(G[Y]) for Y in objs)
+    ok_any = ok_any or match
+    line = &quot;  &quot;.join(f&quot;{Y}:{sizes[Y]}&quot; for Y in objs)
+    line2 = &quot;  &quot;.join(f&quot;{Y}:{len(G[Y])}&quot; for Y in objs)
+    print(f&quot;   X = {X}:  |Hom(X,-)| = {line}   vs   |G| = {line2}&quot;
+          + (&quot;   ← 基数匹配&quot; if match else &quot;&quot;))
+print()
+print(f&quot;--&gt; 有基数匹配的候选：{ok_any}&quot;)
+print(&quot;--&gt; 没有对象 X 使 Hom(X,-) ≅ G：G 不可表&quot;)
+print(&quot;    但 G 按定义就是两个可表函子的余积。&quot;)
+print(&quot;    「不可表」不等于「不属于任何对象的关系」——它是两个可表者拼起来的。&quot;)
+
+# ============================================================== G5
+banner(&quot;G5  密度定理玩具版：G 是可表函子的余极限&quot;)
+
+print(&quot;G = h^A ⊔ h^B&quot;)
+print(&quot;余积本身是一种余极限（两个对象的余极限）。&quot;)
+print()
+print(&quot;一般形式：F ≅ colim( h^X → F )，其中指标范畴是元素范畴 ∫F。&quot;)
+print(&quot;本例的元素范畴：&quot;)
+print(&quot;   ∫G 的对象：(A, idA), (B, f), (B, idB), (C, gf), (C, g)&quot;)
+print(&quot;   每个元素 (X, s) 给出一个 h^X → G 的映射&quot;)
+print(&quot;   G 就是这个图的余极限&quot;)
+print()
+print(&quot;--&gt; 每个函子都是可表函子的余极限：本例已具体写出&quot;)
+
+# ============================================================== 结论
+banner(&quot;结论&quot;)
+print(&quot;G1 x 由外部探测完全决定（有限维、取遍 X^*）：成立&quot;)
+print(&quot;G2 Nat(h^*, F) 的元素个数 = |F(*)|：逐个数出 3 个，成立&quot;)
+print(&quot;G3 Nat(h^B, h^A) 的元素个数 = |C(A,B)|：两侧都是 1，成立&quot;)
+print(&quot;   且找出的唯一自然变换正是 Yoneda 构造 alpha_X(k) = k∘f&quot;)
+print(&quot;G4 G = h^A ⊔ h^B 不可表，但它自己是两个可表函子的余积&quot;)
+print(&quot;G5 密度定理：G 是可表函子图的余极限&quot;)</code></pre>
+<h3>9.4 实跑输出</h3>
+<pre><code class="language-text">
+====================================================================
+G1  Hahn-Banach 弱版：x 由所有 f(x) 决定
+====================================================================
+维度 3，样本 200 个向量
+非零但所有泛函取值全为 0 的向量：0 个
+--&gt; x = 0 当且仅当 f(x) = 0 对所有 f。弱版成立：点可由泛函分离
+不同向量映射到同一指纹的次数：0
+--&gt; 指纹是单射：x 被外部探测完全决定（有限维、取遍 X^* 时）
+
+====================================================================
+G2  Monoid 范畴上的 Yoneda：逐个数 Nat(Hom(*,-), F)
+====================================================================
+M = Z/3，F(*) = Z/3（M 作用为加法）
+满足自然性的 alpha: M -&gt; F(*) 共 3 个
+    {0: 0, 1: 1, 2: 2}
+    {0: 1, 1: 2, 2: 0}
+    {0: 2, 1: 0, 2: 1}
+|F(*)| = 3
+--&gt; Nat(Hom(*,-), F) 有 3 个元素，等于 |F(*)| = 3。Yoneda 双射成立
+
+按 alpha(0) 分组：
+   alpha(0) = 0 → 1 个自然变换
+   alpha(0) = 1 → 1 个自然变换
+   alpha(0) = 2 → 1 个自然变换
+--&gt; 每个 alpha(0) 恰好对应一个自然变换：Phi: alpha |-&gt; alpha(id) 是双射
+
+====================================================================
+G3  Yoneda 嵌入满忠实：Nat(Hom(B,-), Hom(A,-)) = Hom(A,B)
+====================================================================
+范畴：A --f--&gt; B --g--&gt; C
+Hom(A,B) = {&#x27;f&#x27;}，共 1 个
+Nat(h^B, h^A) 的元素个数：1
+    {&#x27;A&#x27;: {}, &#x27;B&#x27;: {&#x27;idB&#x27;: &#x27;f&#x27;}, &#x27;C&#x27;: {&#x27;g&#x27;: &#x27;gf&#x27;}}
+--&gt; 两侧都是 1：Yoneda 嵌入在这一例上满忠实
+
+反向验证：
+Hom(B,A) = set()（空），共 0 个
+Nat(h^A, h^B) 应当也是 0 个——因为 alpha_A: Hom(A,A) -&gt; Hom(B,A) 无法定义
+（非空集到空集不存在函数）
+
+====================================================================
+G4  不可表的函子：G = Hom(A,-) ⊔ Hom(B,-)
+====================================================================
+G = h^A ⊔ h^B 的取值：
+   G(A) = [&#x27;idA&#x27;],  |G(A)| = 1
+   G(B) = [&#x27;f&#x27;, &#x27;idB&#x27;],  |G(B)| = 2
+   G(C) = [&#x27;g&#x27;, &#x27;gf&#x27;],  |G(C)| = 2
+
+检查是否有对象 X 使 Hom(X,-) 与 G 同构（先比基数）：
+   X = A:  |Hom(X,-)| = A:1  B:1  C:1   vs   |G| = A:1  B:2  C:2
+   X = B:  |Hom(X,-)| = A:0  B:1  C:1   vs   |G| = A:1  B:2  C:2
+   X = C:  |Hom(X,-)| = A:0  B:0  C:1   vs   |G| = A:1  B:2  C:2
+
+--&gt; 有基数匹配的候选：False
+--&gt; 没有对象 X 使 Hom(X,-) ≅ G：G 不可表
+    但 G 按定义就是两个可表函子的余积。
+    「不可表」不等于「不属于任何对象的关系」——它是两个可表者拼起来的。
+
+====================================================================
+G5  密度定理玩具版：G 是可表函子的余极限
+====================================================================
+G = h^A ⊔ h^B
+余积本身是一种余极限（两个对象的余极限）。
+
+一般形式：F ≅ colim( h^X → F )，其中指标范畴是元素范畴 ∫F。
+本例的元素范畴：
+   ∫G 的对象：(A, idA), (B, f), (B, idB), (C, gf), (C, g)
+   每个元素 (X, s) 给出一个 h^X → G 的映射
+   G 就是这个图的余极限
+
+--&gt; 每个函子都是可表函子的余极限：本例已具体写出
+
+====================================================================
+结论
+====================================================================
+G1 x 由外部探测完全决定（有限维、取遍 X^*）：成立
+G2 Nat(h^*, F) 的元素个数 = |F(*)|：逐个数出 3 个，成立
+G3 Nat(h^B, h^A) 的元素个数 = |C(A,B)|：两侧都是 1，成立
+   且找出的唯一自然变换正是 Yoneda 构造 alpha_X(k) = k∘f
+G4 G = h^A ⊔ h^B 不可表，但它自己是两个可表函子的余积
+G5 密度定理：G 是可表函子图的余极限
+</code></pre>
+<hr class="section-rule">
+<p>*2026-10-26 · 附录 v1.1 · 证明与方法均自检*</p>
+</article><p class="appendix-link">返回正文：<a href="/issues/03.html">第 3 期</a></p>
+</main>
+<footer class="site-footer">
+  <p><strong>数学如隐喻</strong> · Mathematics as Metaphor</p>
+  <p>源稿与算据：<a href="https://github.com/skyboyhjj/math-as-metaphor">github.com/skyboyhjj/math-as-metaphor</a></p>
+  <p class="license">正文与附录采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>，脚本采用 MIT。</p>
+</footer>
+</div>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

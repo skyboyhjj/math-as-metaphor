@@ -4,3 +4,8 @@ __pycache__/
 .DS_Store
 Thumbs.db
 *.log
+
+# web/ 与 dist/ 是生成物，但故意提交：
+#   web/          由 Cloudflare Pages 直接托管，线上不跑构建
+#   dist/wechat/  公众号粘贴用的 HTML，需要留档
+# 修改请改 issues/ appendices/ 源稿或 templates/style.css，然后重跑 scripts/make_site.py

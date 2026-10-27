@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 3 期 · 对象是关系的总和吗：从 Hahn-Banach 到 Yoneda · 数学如隐喻</title>
+<meta name="description" content="对象是关系的总和吗：从 Hahn-Banach 到 Yoneda">
+<meta property="og:title" content="第 3 期 · 对象是关系的总和吗：从 Hahn-Banach 到 Yoneda">
+<meta property="og:site_name" content="数学如隐喻">
+<meta property="og:description" content="对象是关系的总和吗：从 Hahn-Banach 到 Yoneda">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+
+</head>
+<body>
+<div class="paper">
+<nav class="top-nav"><a href="/">目录</a><a href="/issues/01.html">第 1 期</a><a href="/issues/02.html">第 2 期</a><a href="/issues/03.html" class="on">第 3 期</a><a href="/issues/04.html">第 4 期</a></nav>
+<main>
+<article class="issue">
+<h1>对象是关系的总和吗：从 Hahn-Banach 到 Yoneda</h1>
+<p class="issue-meta">合集【数学如隐喻】第 3 期 ｜ <strong>v1.3</strong>（2026-10-26） ｜ 约 4100 字 ｜ 附录：<a href="/appendices/03.html">Yoneda 引理的完整证明拆解</a> ｜ 算据：<a href="https://github.com/skyboyhjj/math-as-metaphor/blob/main/scripts/verify_yoneda.py">verify_yoneda.py</a></p>
+<h2>一、一个人看不见自己</h2>
+<p>泛函分析里有一条定理，叫 Hahn-Banach。它的标准表述技术性很强，但有一个推论几乎可以当寓言讲：</p>
+<p><strong>在赋范空间里，一个点被它和所有连续线性泛函的配对完全决定</strong>。</p>
+<p>用符号写：对任意 <span class="math">$x \in X$</span>，</p>
+<p><span class="math">$x = 0 \quad\Longleftrightarrow\quad f(x) = 0 \ \text{对所有} \ f \in X^*$</span></p>
+<p>反过来说：只要有一个 <span class="math">$f$</span> 能"测"出 <span class="math">$x$</span> 身上的某个非零数，<span class="math">$x$</span> 就不是零。</p>
+<p><strong>这意味着什么？</strong></p>
+<p>一个人不知道自己是谁。但所有外部探测的结果加起来，把他完全定住了。他没有一个藏在探测之外的"真我"——<strong>至少，那个真我无法被任何探测区分出来，因此在这里不存在</strong>。</p>
+<p>这是"对象由关系决定"的第一个版本。它来自分析，不来自哲学。</p>
+<hr class="section-rule">
+<h2>二、数学里有个更强的版本</h2>
+<p>范畴论里有一条引理，叫 Yoneda。它说的是同一件事，但强得多。</p>
+<p>先把话说明白。给定一个范畴 <span class="math">$\mathcal{C}$</span>，一个对象 <span class="math">$A$</span>，可以把 <span class="math">$A$</span> 的"外部关系网"打成一个函子：</p>
+<p><span class="math">$h^A := \mathcal{C}(A, -) \colon \mathcal{C} \to \mathbf{Set}$</span></p>
+<p>它对每个对象 <span class="math">$X$</span> 给出从 <span class="math">$A$</span> 到 <span class="math">$X$</span> 的所有态射，对每个态射给出"接在后面"的操作。</p>
+<p><strong>Yoneda 引理</strong>说：对这个函子的所有自然变换，和 <span class="math">$A$</span> 的"外部关系"之间，有一个一一对应——</p>
+<p><span class="math">$\mathrm{Nat}(h^A, F) \;\cong\; F(A)$</span></p>
+<p>取 <span class="math">$F = h^B$</span>，就得到：</p>
+<p><span class="math">$\mathrm{Nat}(h^A, h^B) \;\cong\; h^B(A) = \mathcal{C}(B, A)$</span></p>
+<p>左边是"两个对象的外部关系网之间的所有保结构映射"，右边是"从 <span class="math">$B$</span> 到 <span class="math">$A$</span> 的所有态射"。</p>
+<p><strong>两边一样多。一个不多，一个不少</strong>。</p>
+<h3>这不是引用，这是可以数的</h3>
+<p>抽象的话说到这儿容易飘，所以把它数一遍。</p>
+<p>取最省事的范畴：只有一个对象 <span class="math">$\ast$</span>，从它到自己的态射构成群 <span class="math">$M = \mathbb{Z}/3$</span>。</p>
+<p>那么 <span class="math">$h^\ast$</span> 就是：唯一对象映到 <span class="math">$M$</span> 本身，态射映到左乘。</p>
+<p>取另一个函子 <span class="math">$F$</span>：唯一对象映到 <span class="math">$\mathbb{Z}/3$</span>，态射映到加法作用 <span class="math">$m \cdot x = m + x$</span>。</p>
+<p>Yoneda 说 <span class="math">$\mathrm{Nat}(h^\ast, F) \cong F(\ast) = \mathbb{Z}/3$</span>，也就是<strong>恰好 3 个</strong>自然变换。</p>
+<p>我们把所有可能的映射 <span class="math">$\alpha \colon M \to \mathbb{Z}/3$</span> 全枚举一遍（<span class="math">$3^3 = 27$</span> 个），逐个检查自然性条件 <span class="math">$\alpha(m+g) = m + \alpha(g)$</span>。</p>
+<p><strong>结果：恰好 3 个符合</strong>。</p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left"><span class="math">$\alpha(0)$</span></th><th style="text-align:left">对应的自然变换</th><th style="text-align:left">个数</th></tr></thead><tbody><tr><td style="text-align:left">0</td><td style="text-align:left"><span class="math">$\alpha(x) = x$</span></td><td style="text-align:left">1</td></tr><tr><td style="text-align:left">1</td><td style="text-align:left"><span class="math">$\alpha(x) = x+1$</span></td><td style="text-align:left">1</td></tr><tr><td style="text-align:left">2</td><td style="text-align:left"><span class="math">$\alpha(x) = x+2$</span></td><td style="text-align:left">1</td></tr></tbody></table></div>
+<p>而且每一个 <span class="math">$\alpha(0)$</span> 的取值，唯一确定整个 <span class="math">$\alpha$</span>。</p>
+<p><strong>这就是 Yoneda 的实质：一个自然变换被它在一个点上的取值完全钉死</strong>。那个点就是 <span class="math">$\mathrm{id}_A$</span>。</p>
+<p>再说得直白些：<strong>你想知道 <span class="math">$A$</span> 的全部，只要看 <span class="math">$\mathrm{id}_A$</span> 在所有自然变换下被送到哪里</strong>。</p>
+<hr class="section-rule">
+<h2>三、但它们不是一回事</h2>
+<p>到这里很容易顺口说一句"所以对象就是关系的总和"。<strong>先别急</strong>。这两个定理的强度差得很远。</p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left"></th><th style="text-align:left">Hahn-Banach 推论</th><th style="text-align:left">Yoneda 引理</th></tr></thead><tbody><tr><td style="text-align:left">保证什么</td><td style="text-align:left">点可由泛函<strong>分离</strong></td><td style="text-align:left">对象由函子<strong>完全决定</strong></td></tr><tr><td style="text-align:left">映射的性质</td><td style="text-align:left"><span class="math">$X \to X^{**}$</span> 等距嵌入，未必满</td><td style="text-align:left">满且忠实，无条件成立</td></tr><tr><td style="text-align:left">何时失效</td><td style="text-align:left">非自反空间里 <span class="math">$X \ne X^{**}$</span></td><td style="text-align:left">不存在反例</td></tr><tr><td style="text-align:left">需要什么前提</td><td style="text-align:left">赋范空间 + 选择公理</td><td style="text-align:left">只要是个范畴</td></tr></tbody></table></div>
+<p><strong>差别在"分离"与"决定"之间</strong>。</p>
+<p>Hahn-Banach 只说：不同的点能被某个泛函区分开。它<strong>没有</strong>说：所有泛函的取值组合，能反过来把点重构出来。</p>
+<p>后者要求 <span class="math">$X \to X^{**}$</span> 是满射——那是<strong>自反</strong>，而自反不是免费的。存在大量非自反的 Banach 空间（<span class="math">$c_0$</span>、<span class="math">$L^1$</span>、<span class="math">$C(K)$</span> 的一般情形），在那里"由泛函完全决定"是<strong>错的</strong>。</p>
+<p><strong>Yoneda 不需要这种条件</strong>。它对任何范畴、任何对象都成立，一字不改。</p>
+<p>所以正确的说法是：</p>
+<blockquote><p>Hahn-Banach 给了这件事一个<strong>影子</strong>；Yoneda 给了它<strong>本体</strong>。</p></blockquote>
+<p>把两者当成同一条定理的两个版本，是常见的过度统一。<strong>格式同型不等于等价</strong>——这一步不划清，后面所有推论都会跟着虚。</p>
+<hr class="section-rule">
+<h2>四、最容易夸大的地方</h2>
+<p>现在说一句我自己栽过的话。</p>
+<p>"对象是关系的总和"——这句话听起来像是在说：<strong>存在一些关系，它们不属于任何对象</strong>。</p>
+<p>去年我按这个思路构造了一个函子 <span class="math">$G$</span>，它不可表，于是我说：看，有不属于任何对象的关系。</p>
+<p>后来把它算清楚了。在一只含三个对象的小范畴里（<span class="math">$A \to B \to C$</span>），取</p>
+<p><span class="math">$G := h^A \sqcup h^B$</span></p>
+<p>它的取值是：</p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">对象</th><th style="text-align:left"><span class="math">$G$</span> 的取值</th><th style="text-align:left">元素个数</th></tr></thead><tbody><tr><td style="text-align:left"><span class="math">$A$</span></td><td style="text-align:left"><span class="math">$\{\mathrm{id}_A\}$</span></td><td style="text-align:left">1</td></tr><tr><td style="text-align:left"><span class="math">$B$</span></td><td style="text-align:left"><span class="math">$\{f, \mathrm{id}_B\}$</span></td><td style="text-align:left">2</td></tr><tr><td style="text-align:left"><span class="math">$C$</span></td><td style="text-align:left"><span class="math">$\{g, gf\}$</span></td><td style="text-align:left">2</td></tr></tbody></table></div>
+<p>然后去试：有没有对象 <span class="math">$X$</span> 使 <span class="math">$h^X \cong G$</span>？</p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">候选 <span class="math">$X$</span></th><th style="text-align:left"><span class="math">$\lvert h^X(A)\rvert, \lvert h^X(B)\rvert, \lvert h^X(C)\rvert$</span></th><th style="text-align:left">与 <span class="math">$G$</span> 比</th></tr></thead><tbody><tr><td style="text-align:left"><span class="math">$A$</span></td><td style="text-align:left">1, 1, 1</td><td style="text-align:left">不符</td></tr><tr><td style="text-align:left"><span class="math">$B$</span></td><td style="text-align:left">0, 1, 1</td><td style="text-align:left">不符</td></tr><tr><td style="text-align:left"><span class="math">$C$</span></td><td style="text-align:left">0, 0, 1</td><td style="text-align:left">不符</td></tr></tbody></table></div>
+<p><strong>没有一个匹配。<span class="math">$G$</span> 确实不可表</strong>。</p>
+<p>但我忘了一件事：<span class="math">$G$</span> <strong>按定义就是两个可表函子的余积</strong>。</p>
+<p><strong>"不可表"不等于"不属于任何对象的关系"。它是两个可表者拼起来的东西</strong>。</p>
+<p>这就是密度定理说的事：</p>
+<p><span class="math">$F \;\cong\; \mathrm{colim}\big(h^A \to F\big)$</span></p>
+<p><strong>每一个函子，都是可表函子的余极限</strong>。</p>
+<p>没有一个函子是彻底"野"的。那些看起来不属于任何对象的关系，拆到最基层，全是由可表者拼出来的。</p>
+<p><strong>教训</strong>：只验了"不可表"，没验"不可表者是否仍由可表者生成"。<strong>否定一个东西的性质，不等于肯定它的对立面</strong>。</p>
+<hr class="section-rule">
+<h2>五、所以这句话该怎么读</h2>
+<p>现在可以把"对象是关系的总和"拆成两种读法：</p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">读法</th><th style="text-align:left">说什么</th><th style="text-align:left">判定</th></tr></thead><tbody><tr><td style="text-align:left">本体论</td><td style="text-align:left">对象的<strong>构成</strong>就是关系，关系是第一性的实体</td><td style="text-align:left">过度。Yoneda 不支持这个</td></tr><tr><td style="text-align:left">认识论</td><td style="text-align:left">对象在关系网里<strong>没有任何剩余</strong>：两个对象若关系网同构，就无法区分</td><td style="text-align:left">准确。这正是 Yoneda</td></tr></tbody></table></div>
+<p>差别在于：前者说世界是什么，后者说<strong>我们能知道什么</strong>。</p>
+<p>而 Yoneda 说的是后者。它是一条<strong>方法</strong>：</p>
+<blockquote><p>想知道 <span class="math">$A$</span> 是什么，看 <span class="math">$\mathcal{C}(A, -)$</span> 就够了。</p></blockquote>
+<p>它<strong>不是</strong>一条禁令：</p>
+<blockquote><p>不许 <span class="math">$A$</span> 有别的东西。</p></blockquote>
+<p>这两句完全不同。<strong>第一句是"够用"，第二句是"只有"</strong>。</p>
+<p>我上学期把它们混了，才说出了那句过头的话。</p>
+<hr class="section-rule">
+<h2>六、回到自由</h2>
+<p>上期的结语落在「边界」两个字上：知道了边界在哪，才知道该在边界内怎么设计规则。</p>
+<p>这一期说的是另一种边界——不是规则的边界，是<strong>对象本身的边界</strong>：一个对象能被什么探测到，就决定了它是什么。</p>
+<p>答案是：<strong>你以为你在定义对象，其实是关系在定义它</strong>。</p>
+<p>你选了一组公理，以为这是自由；但公理一旦选定，结论就被逼出来了。你定义了一个对象，以为这是创造；但对象能被什么探测到，就决定了它是什么（这一期）。</p>
+<p><strong>但请注意：Yoneda 是定理，不是命令</strong>。</p>
+<p>它说的是"如果你想知道 <span class="math">$A$</span> 是什么，看关系网就够了"——<strong>它没有取消 <span class="math">$A$</span>，它只是告诉你 <span class="math">$A$</span> 的全部在哪</strong>。</p>
+<p>就像一个人：他的全部可以被他人的探测完全决定，但这并不等于他没有内心。它只是说明——<strong>那个内心如果永远无法被任何探测触及，那它在关系世界里就是不存在的</strong>。</p>
+<p>你没失去自由。你只是知道了<strong>自由必须落在关系上才成立</strong>。</p>
+<hr class="section-rule">
+<h2>三个小自测</h2>
+<p><strong>1. 为什么 Hahn-Banach 的推论要求"取遍 <span class="math">$X^*$</span>"，而不能只取有限个泛函？</strong></p>
+<p>因为有限个泛函的公共零点集一般是一个正余维的子空间。要不漏掉任何一个非零向量，必须让这一族泛函足够大——<span class="math">$X^*$</span> 全体刚好够。</p>
+<p><strong>2. Yoneda 里那个"一个点"是哪个点？为什么是它？</strong></p>
+<p>是 <span class="math">$\mathrm{id}_A \in \mathcal{C}(A,A)$</span>。因为它是唯一一个"不需要任何外部信息就能指认"的元素：它是 <span class="math">$A$</span> 到自己的恒等。所有自然变换的信息，都被这一个点承载。</p>
+<p><strong>3. 你说"不可表函子仍是可表者的余极限"，那"可表"这个性质还有什么用？</strong></p>
+<p>它区分了"由一个对象完全代表"和"由一族对象拼出来"。前者能让你指着一个具体的 <span class="math">$A$</span> 说话，后者不能。<strong>能不能指认，和存不存在，是两件事</strong>。</p>
+<hr class="section-rule">
+<h2>最后一句</h2>
+<p>这一期讲的是一个否定，但否定得很温和。</p>
+<p>它没有说对象是虚构的，只说：<strong>对象的所有可说的部分，都在它的关系里</strong>。</p>
+<p>而"所有可说的部分"这个限定，恰恰是自由的入口——因为<strong>不可说的部分，正是留给创造的地方</strong>。</p>
+<p>顺着这条路再走一步，会撞见另一件事：数学长出了一门专门谈论自己的语言。它不说"这个对象是什么"，只说"它跟别的对象怎么连"。</p>
+</article>
+<p class="appendix-link">完整证明与算据：<a href="/appendices/03.html">附录 · 第 3 期</a></p><div class="pager"><a class="pg prev" href="/issues/02.html"><span>上一期</span>第 2 期</a><a class="pg next" href="/issues/04.html"><span>下一期</span>第 4 期</a></div>
+</main>
+<footer class="site-footer">
+  <p><strong>数学如隐喻</strong> · Mathematics as Metaphor</p>
+  <p>源稿与算据：<a href="https://github.com/skyboyhjj/math-as-metaphor">github.com/skyboyhjj/math-as-metaphor</a></p>
+  <p class="license">正文与附录采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>，脚本采用 MIT。</p>
+</footer>
+</div>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
